@@ -23,7 +23,6 @@ if node['wordpress']['db']['host'] == "localhost"
 else
   include_recipe "mysql::client"
 end
-include_recipe "mysql::ruby"
 include_recipe "php"
 include_recipe "php::module_mysql"
 include_recipe "apache2::mod_php5"
@@ -95,12 +94,8 @@ end
 execute "create #{node['wordpress']['db']['database']} database" do
   command "/usr/bin/mysqladmin -h #{node['wordpress']['db']['host']} -u root -p\"#{node['mysql']['server_root_password']}\" create #{node['wordpress']['db']['database']}"
   not_if do
-    # Make sure gem is detected if it was just installed earlier in this recipe
-    require 'rubygems'
-    Gem.clear_paths
-    require 'mysql'
-    m = Mysql.new(node['wordpress']['db']['host'], "root", node['mysql']['server_root_password'])
-    m.list_dbs.include?(node['wordpress']['db']['database'])
+    result=Chef::ShellOut.new("/usr/bin/mysql -h #{node['wordpress']['db']['host']} -u root -p\"#{node['mysql']['server_root_password']}\" -e \"show databases\" --silent --disable-column-names").stdout.split("\n")
+    result.include?(node['wordpress']['db']['database'])
   end
   notifies :create, "ruby_block[save node data]", :immediately unless Chef::Config[:solo]
 end
