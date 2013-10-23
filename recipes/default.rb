@@ -17,14 +17,26 @@
 # limitations under the License.
 #
 
+
 include_recipe "apache2"
 if node['wordpress']['db']['host'] == "localhost"
   include_recipe "mysql::server" 
 else
   include_recipe "mysql::client"
 end
-include_recipe "php"
-include_recipe "php::module_mysql"
+
+pkg = value_for_platform(
+  %w(centos redhat scientific fedora amazon) => {
+    el5_range => "php53-mysql",
+    "default" => "php-mysql"
+  },
+  "default" => "php5-mysql"
+)
+
+package pkg do
+  action :install
+end
+
 include_recipe "apache2::mod_php5"
 
 if node.has_key?("ec2")
