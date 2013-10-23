@@ -26,6 +26,7 @@ default['wordpress']['repourl'] = "http://wordpress.org/"
 default['wordpress']['dir'] = "/var/www/wordpress"
 default['wordpress']['db']['database'] = "wordpressdb"
 default['wordpress']['db']['user'] = "wordpressuser"
+default['wordpress']['db']['host'] = "localhost"
 default['wordpress']['server_aliases'] = [node['fqdn']]
 
 # Languages
