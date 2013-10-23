@@ -51,6 +51,11 @@ attribute "WordPress/db/password",
   :description => "Password for the WordPress MySQL user.",
   :default => "randomly generated"
 
+attribute "WordPress/db/host",
+  :display_name => "WordPress MySQL hostname",
+  :description => "Name of the host on which MySQL is running.",
+  :default => "localhost"
+  
 attribute "WordPress/keys/auth",
   :display_name => "WordPress auth key",
   :description => "WordPress auth key.",
