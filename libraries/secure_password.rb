@@ -11,5 +11,6 @@ module SecurePassword
     while pw.length < length
       pw << ::OpenSSL::Random.random_bytes(1).gsub(/\W/, '')
     end
-  pw
+    pw
+  end
 end
