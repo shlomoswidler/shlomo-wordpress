@@ -38,17 +38,19 @@ end
 
 include_recipe "apache2::mod_php5"
 
+include Opscode::OpenSSL::Password
+
 if node.has_key?("ec2")
   server_fqdn = node['ec2']['public_hostname']
 else
   server_fqdn = node['fqdn']
 end
 
-node.set_unless['wordpress']['db']['password'] = Opscode::OpenSSL::Password.secure_password
-node.set_unless['wordpress']['keys']['auth'] = Opscode::OpenSSL::Password.secure_password
-node.set_unless['wordpress']['keys']['secure_auth'] = Opscode::OpenSSL::Password.secure_password
-node.set_unless['wordpress']['keys']['logged_in'] = Opscode::OpenSSL::Password.secure_password
-node.set_unless['wordpress']['keys']['nonce'] = Opscode::OpenSSL::Password.secure_password
+node.set_unless['wordpress']['db']['password'] = Password.secure_password
+node.set_unless['wordpress']['keys']['auth'] = Password.secure_password
+node.set_unless['wordpress']['keys']['secure_auth'] = Password.secure_password
+node.set_unless['wordpress']['keys']['logged_in'] = Password.secure_password
+node.set_unless['wordpress']['keys']['nonce'] = Password.secure_password
 
 
 if node['wordpress']['version'] == 'latest'
