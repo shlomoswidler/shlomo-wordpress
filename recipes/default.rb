@@ -44,11 +44,11 @@ else
   server_fqdn = node['fqdn']
 end
 
-node.set_unless['wordpress']['db']['password'] = SecurePassword.secure_password
-node.set_unless['wordpress']['keys']['auth'] = SecurePassword.secure_password
-node.set_unless['wordpress']['keys']['secure_auth'] = SecurePassword.secure_password
-node.set_unless['wordpress']['keys']['logged_in'] = SecurePassword.secure_password
-node.set_unless['wordpress']['keys']['nonce'] = SecurePassword.secure_password
+node.set_unless['wordpress']['db']['password'] = ::SecurePassword.secure_password
+node.set_unless['wordpress']['keys']['auth'] = ::SecurePassword.secure_password
+node.set_unless['wordpress']['keys']['secure_auth'] = ::SecurePassword.secure_password
+node.set_unless['wordpress']['keys']['logged_in'] = ::SecurePassword.secure_password
+node.set_unless['wordpress']['keys']['nonce'] = ::SecurePassword.secure_password
 
 
 if node['wordpress']['version'] == 'latest'
