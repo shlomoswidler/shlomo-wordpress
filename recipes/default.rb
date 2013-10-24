@@ -103,7 +103,7 @@ template "#{node['mysql']['conf_dir']}/wp-grants.sql" do
 end
 
 execute "create #{node['wordpress']['db']['database']} database" do
-  command "/usr/bin/mysql -h #{node['wordpress']['db']['host']} -u #{node['mysql']['server_root_user']} -p\"#{node['mysql']['server_root_password']}\" create database if not exists #{node['wordpress']['db']['database']}"
+  command "/usr/bin/mysql -h #{node['wordpress']['db']['host']} -u #{node['mysql']['server_root_user']} -p\"#{node['mysql']['server_root_password']}\" -e \"create database if not exists #{node['wordpress']['db']['database']}\""
   notifies :create, "ruby_block[save node data]", :immediately unless Chef::Config[:solo]
 end
 
