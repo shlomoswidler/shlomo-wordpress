@@ -38,8 +38,6 @@ end
 
 include_recipe "apache2::mod_php5"
 
-include Opscode::OpenSSL::Password
-
 if node.has_key?("ec2")
   server_fqdn = node['ec2']['public_hostname']
 else
