@@ -85,7 +85,7 @@ execute "untar-wordpress" do
 end
 
 execute "mysql-install-wp-privileges" do
-  command "/usr/bin/mysql -h #{node['wordpress']['db']['host']} -u #{node['mysql']['server_root_user']} -p\"#{node['mysql']['server_root_password']}\" < #{node['mysql']['conf_dir']}/wp-grants.sql"
+  command "/usr/bin/mysql -h #{node['wordpress']['db']['host']} -u #{node['mysql']['server_root_user']} -p\"#{node['mysql']['server_root_password']}\" mysql < #{node['mysql']['conf_dir']}/wp-grants.sql"
   action :nothing
 end
 
