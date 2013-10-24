@@ -85,7 +85,7 @@ execute "untar-wordpress" do
 end
 
 execute "mysql-install-wp-privileges" do
-  command "/usr/bin/mysql -h #{node['wordpress']['db']['host']} -u root -p\"#{node['mysql']['server_root_password']}\" < #{node['mysql']['conf_dir']}/wp-grants.sql"
+  command "/usr/bin/mysql -h #{node['wordpress']['db']['host']} -u #{node['msql']['server_root_user']} -p\"#{node['mysql']['server_root_password']}\" < #{node['mysql']['conf_dir']}/wp-grants.sql"
   action :nothing
 end
 
@@ -103,9 +103,9 @@ template "#{node['mysql']['conf_dir']}/wp-grants.sql" do
 end
 
 execute "create #{node['wordpress']['db']['database']} database" do
-  command "/usr/bin/mysqladmin -h #{node['wordpress']['db']['host']} -u root -p\"#{node['mysql']['server_root_password']}\" create #{node['wordpress']['db']['database']}"
+  command "/usr/bin/mysqladmin -h #{node['wordpress']['db']['host']} -u #{node['msql']['server_root_user']} -p\"#{node['mysql']['server_root_password']}\" create #{node['wordpress']['db']['database']}"
   not_if do
-    result=Chef::ShellOut.new("/usr/bin/mysql -h #{node['wordpress']['db']['host']} -u root -p\"#{node['mysql']['server_root_password']}\" -e \"show databases\" --silent --disable-column-names").stdout.split("\n")
+    result=Chef::ShellOut.new("/usr/bin/mysql -h #{node['wordpress']['db']['host']} -u #{node['msql']['server_root_user']} -p\"#{node['mysql']['server_root_password']}\" -e \"show databases\" --silent --disable-column-names").stdout.split("\n")
     result.include?(node['wordpress']['db']['database'])
   end
   notifies :create, "ruby_block[save node data]", :immediately unless Chef::Config[:solo]
