@@ -27,8 +27,7 @@ end
 
 pkg = value_for_platform(
   %w(centos redhat scientific fedora amazon) => {
-    el5_range => "php53-mysql",
-    "default" => "php-mysql"
+    "default" => "php53-mysql"
   },
   "default" => "php5-mysql"
 )
