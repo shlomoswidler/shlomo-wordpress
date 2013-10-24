@@ -9,9 +9,7 @@ version          "1.2.1"
 recipe "WordPress", "Installs and configures WordPress, and optionally the MySQL database it will use"
 recipe "WordPress::languages", "Install WordPress translation files"
 
-%w{ php openssl }.each do |cb|
-  depends cb
-end
+depends "openssl"
 
 depends "apache2", ">= 0.99.4"
 depends "mysql", ">= 1.0.5"
