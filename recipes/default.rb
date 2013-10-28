@@ -97,7 +97,7 @@ template "#{node['mysql']['conf_dir']}/wp-grants.sql" do
   variables(
     :user     => node['wordpress']['db']['user'],
     :password => node['wordpress']['db']['password'],
-    :database => node['wordpress']['db']['database']
+    :database => node['wordpress']['db']['database'],
   )
   notifies :run, "execute[mysql-install-wp-privileges]", :immediately
 end
@@ -136,7 +136,9 @@ template "#{node['wordpress']['dir']}/wp-config.php" do
     :secure_auth_key => node['wordpress']['keys']['secure_auth'],
     :logged_in_key   => node['wordpress']['keys']['logged_in'],
     :nonce_key       => node['wordpress']['keys']['nonce'],
-    :lang            => node['wordpress']['languages']['lang']
+    :lang            => node['wordpress']['languages']['lang'],
+    :wp_home         => node['wordpress']['wp_home'],
+    :wp_siteurl      => node['wordpress']['wp_siteurl']
   )
   notifies :write, "log[wordpress_install_message]"
 end
