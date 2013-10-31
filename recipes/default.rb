@@ -97,7 +97,7 @@ template "#{node['mysql']['conf_dir']}/wp-grants.sql" do
   variables(
     :user     => node['wordpress']['db']['user'],
     :password => node['wordpress']['db']['password'],
-    :database => node['wordpress']['db']['database'],
+    :database => node['wordpress']['db']['database']
   )
   notifies :run, "execute[mysql-install-wp-privileges]", :immediately
 end
