@@ -9,7 +9,7 @@ version          "1.2.1"
 recipe "WordPress", "Installs and configures WordPress, and optionally the MySQL database it will use"
 recipe "WordPress::languages", "Install WordPress translation files"
 
-depends "apt", ">=2.3.1"
+depends "apt", ">= 2.3.1"
 depends "apache2", ">= 0.99.4"
 depends "mysql", ">= 1.0.5"
 
