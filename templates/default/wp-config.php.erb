@@ -15,10 +15,11 @@
  */
 
 <% if @wp_config_extras
-   @wp_config_extras.each do |opt_name, opt_value|
+     @wp_config_extras.each do |opt_name, opt_value|
 %>
 define('<%= opt_name %>','<%= opt_value %>');
-<% end %>
+<%   end 
+   end %>
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
