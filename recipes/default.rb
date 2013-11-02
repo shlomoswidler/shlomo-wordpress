@@ -137,8 +137,7 @@ template "#{node['wordpress']['dir']}/wp-config.php" do
     :logged_in_key   => node['wordpress']['keys']['logged_in'],
     :nonce_key       => node['wordpress']['keys']['nonce'],
     :lang            => node['wordpress']['languages']['lang'],
-    :wp_home         => node['wordpress']['wp_home'],
-    :wp_siteurl      => node['wordpress']['wp_siteurl']
+    :wp_config_extras =>node['wordpress']['wp_config_extras']
   )
   notifies :write, "log[wordpress_install_message]"
 end
