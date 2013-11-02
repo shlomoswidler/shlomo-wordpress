@@ -28,6 +28,7 @@ default['wordpress']['db']['database'] = "wordpressdb"
 default['wordpress']['db']['user'] = "wordpressuser"
 default['wordpress']['db']['host'] = "localhost"
 default['wordpress']['server_aliases'] = [node['fqdn']]
+default['wordpress']['wp_config_extras'] = {}
 
 # Languages
 default['wordpress']['languages']['lang'] = ''
