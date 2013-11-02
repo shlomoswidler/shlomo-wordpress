@@ -14,11 +14,10 @@
  * @package WordPress
  */
 
-<% if @wp_home %>
-define('WP_HOME','<%= @wp_home %>');
-<% end %>
-<% if @wp_siteurl %>
-define('WP_SITEURL', '<%= @wp_siteurl %>');
+<% if @wp_config_extras
+   @wp_config_extras.each do |opt_name, opt_value|
+%>
+define('<%= opt_name %>','<%= opt_value %>');
 <% end %>
 
 // ** MySQL settings - You can get this info from your web host ** //
