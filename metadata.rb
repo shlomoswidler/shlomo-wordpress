@@ -20,12 +20,6 @@ attribute "WordPress/db/host",
   :type "string",
   :default => "localhost"
 
-attribute "WordPress/server_aliases",
-  :display_name => "WordPress Server Aliases",
-  :description => "WordPress Server Aliases",
-  :type => "string",
-  :default => "FQDN"
-
 attribute "WordPress/wp_config_extras",
   :display_name => "Extra wp-config.php entries",
   :description => "hash of option name and value to place into wp-config.php, e.g. { 'ENABLE_CACHE' : 'false' }",
