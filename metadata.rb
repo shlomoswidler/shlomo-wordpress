@@ -17,7 +17,7 @@ end
 attribute "WordPress/db/host",
   :display_name => "WordPress MySQL hostname",
   :description => "Name of the host on which MySQL is running.",
-  :type "string",
+  :type => "string",
   :default => "localhost"
 
 attribute "WordPress/wp_config_extras",
