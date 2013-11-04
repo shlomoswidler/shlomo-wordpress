@@ -1,4 +1,3 @@
-include_attribute "wordpress"
 include_recipe "apache2"
 if node['wordpress']['db']['host'] == "localhost"
   include_recipe "mysql::server" 
