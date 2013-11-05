@@ -143,7 +143,6 @@ if node[:wordpress][:web_root_overlay_bundle] && node[:wordpress][:web_root_over
   bundle_basename = File.basename(node[:wordpress][:web_root_overlay_bundle][:s3_url])
   
   ruby_block "download webroot overlay bundle" do
-    user 'root'
     block do
       InstanceMetadata.wait_for_instance_IAM_metadata_to_be_available
       shell = Mixlib::ShellOut.new("awscli --region #{node[:wordpress][:web_root_overlay_bundle][:region]} s3 cp #{node[:wordpress][:web_root_overlay_bundle][:s3_url]} #{node[:wordpress][:dir]}")
