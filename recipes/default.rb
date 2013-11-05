@@ -145,7 +145,7 @@ if node[:wordpress][:web_root_overlay_bundle] && node[:wordpress][:web_root_over
   ruby_block "download webroot overlay bundle" do
     block do
       InstanceMetadata.wait_for_instance_IAM_metadata_to_be_available
-      shell = Mixlib::ShellOut.new("awscli --region #{node[:wordpress][:web_root_overlay_bundle][:region]} s3 cp #{node[:wordpress][:web_root_overlay_bundle][:s3_url]} #{node[:wordpress][:dir]}")
+      shell = Mixlib::ShellOut.new("aws --region #{node[:wordpress][:web_root_overlay_bundle][:region]} s3 cp #{node[:wordpress][:web_root_overlay_bundle][:s3_url]} #{node[:wordpress][:dir]}")
       result= shell.run_command
       if !(result.exit_status)
         raise "Failed to download webroot overlay bundle from #{node[:wordpress][:web_root_overlay_bundle][:s3_url]}\nSTDERR:\n"+shell.stderr+"\nSTDOUT:\n"+shell.stdout
