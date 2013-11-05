@@ -23,7 +23,7 @@ attribute "WordPress/db/host",
 
 attribute "WordPress/wp_config_extras",
   :display_name => "Extra wp-config.php entries",
-  :description => "array of option name and value to place into wp-config.php, e.g. [ 'ENABLE_CACHE' : 'false' ]",
+  :description => "hash of option name and value to place into wp-config.php, e.g. { 'ENABLE_CACHE' : 'false' }",
   :type => "string",
   :default => nil
 
