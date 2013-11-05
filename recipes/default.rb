@@ -134,3 +134,32 @@ web_app "wordpress" do
   server_name server_fqdn
   server_aliases node['wordpress']['server_aliases']
 end
+
+if node[:wordpress][:web_root_overlay_bundle] && node[:wordpress][:web_root_overlay_bundle][:region] && \
+  node[:wordpress][:web_root_overlay_bundle][:s3_url]
+  
+  include_recipe 'awscli'
+  
+  bundle_basename = File.basename(node[:wordpress][:web_root_overlay_bundle][:s3_url])
+  
+  ruby_block "download webroot overlay bundle" do
+    user 'root'
+    block do
+      InstanceMetadata.wait_for_instance_IAM_metadata_to_be_available
+      shell = Mixlib::ShellOut.new("awscli --region #{node[:wordpress][:web_root_overlay_bundle][:region]} s3 cp #{node[:wordpress][:web_root_overlay_bundle][:s3_url]} #{node[:wordpress][:dir]}")
+      result= shell.run_command
+      if !(result.exit_status)
+        raise "Failed to download webroot overlay bundle from #{node[:wordpress][:web_root_overlay_bundle][:s3_url]}\nSTDERR:\n"+shell.stderr+"\nSTDOUT:\n"+shell.stdout
+      end
+    end
+    not_if { File.exists?("#{node[:wordpress][:dir]}/#{bundle_basename}") }
+    notifies :run, "execute[open webroot overlay bundle]", :immediately
+  end
+  
+  execute "open webroot overlay bundle" do
+    cwd node[:wordpress][:dir]
+    command "tar xvzf #{bundle_basename}"
+    action :nothing
+  end
+
+end
