@@ -123,6 +123,9 @@ template "#{node['wordpress']['dir']}/wp-config.php" do
   notifies :write, "log[wordpress_install_message]"
 end
 
+include_recipe "apache2::mod_rewrite"
+include_recipe "apache2::mod_ssl"
+
 apache_site "000-default" do
   enable false
 end
