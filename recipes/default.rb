@@ -159,6 +159,24 @@ if node[:wordpress][:web_root_overlay_bundle] && node[:wordpress][:web_root_over
     cwd node[:wordpress][:dir]
     command "tar xvzf #{bundle_basename}"
     action :nothing
+    notifies :run, "execute[fix wordpress dir owner and permissions]", :immediately
+  end
+  
+  execute "fix wordpress dir owner and permissions" do
+    user 'root'
+    cwd node[:wordpress][:dir]
+    command <<-EOH
+      chown -R nobody:www-data *
+      find . -type d -exec chmod 755 {} \;
+      find . -type f -exec chmod 644 {} \;
+    EOH
+    action :nothing
+    notifies :run, "execute[protect webroot bundle from being read]", :immediately
+  end
+  
+  execute "protect webroot bundle from being read" do
+    command "chmod 000 #{node[:wordpress][:dir]}/#{bundle_basename}"
+    action :nothing
   end
 
 end
