@@ -168,7 +168,8 @@ if node[:wordpress][:web_root_overlay_bundle] && node[:wordpress][:web_root_over
     user 'root'
     cwd node[:wordpress][:dir]
     command <<-EOH
-      chown -R nobody:www-data *
+      chown www-data:www-data .
+      chown -R www-data:www-data *
       find . -type d -exec chmod 755 {} \;
       find . -type f -exec chmod 644 {} \;
     EOH
