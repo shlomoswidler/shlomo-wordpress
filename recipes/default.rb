@@ -123,6 +123,20 @@ template "#{node['wordpress']['dir']}/wp-config.php" do
   notifies :write, "log[wordpress_install_message]"
 end
 
+unless node['wordpress']['table_prefix'].nil?
+  execute "set table prefix" do
+    command <<-EOH
+      sed -i -e "s/table_prefix[[:space:]]*=.*$/table_prefix='#{node['wordpress']['table_prefix']}';/" #{node['wordpress']['dir']}/wp-config.php
+      EOH
+    not_if {
+      shell = Mixlib::ShellOut.new("grep \"table_prefix[[:space:]]*=[[:space:]]*'#{node['wordpress']['table_prefix']}'\" #{node['wordpress']['dir']}/wp-config.php")
+      shell.run_command
+      shell.exitstatus && shell.stdout.length > 1
+    }
+    notifies :write, "log[wordpress_install_message]"
+  end
+end
+
 include_recipe "apache2::mod_rewrite"
 include_recipe "apache2::mod_ssl"
 
