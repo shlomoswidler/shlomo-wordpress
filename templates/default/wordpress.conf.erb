@@ -1,0 +1,57 @@
+<VirtualHost *:80>
+  ServerName <%= @params[:server_name] %>
+  ServerAlias <% @params[:server_aliases].each do |a| %><%= a %> <% end %>
+  DocumentRoot <%= @params[:docroot] %>
+
+  <Directory <%= @params[:docroot] %>>
+    Options FollowSymLinks
+    AllowOverride FileInfo Options
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
+
+  LogLevel info
+  ErrorLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-error.log
+  CustomLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-access.log combined
+
+  RewriteEngine On
+  RewriteLog <%= node['apache']['log_dir'] %>/<%= @application_name %>-rewrite.log
+  RewriteLogLevel 0
+
+</VirtualHost>
+
+<VirtualHost *:443>
+
+  SSLEngine On
+  SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
+  SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+  
+  ServerName <%= @params[:server_name] %>
+  ServerAlias <% @params[:server_aliases].each do |a| %><%= a %> <% end %>
+  DocumentRoot <%= @params[:docroot] %>
+
+  <Directory <%= @params[:docroot] %>>
+    Options FollowSymLinks
+    AllowOverride FileInfo Options
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
+
+  LogLevel info
+  ErrorLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-https-error.log
+  CustomLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-https-access.log combined
+
+  RewriteEngine On
+  RewriteLog <%= node['apache']['log_dir'] %>/<%= @application_name %>-https-rewrite.log
+  RewriteLogLevel 0
+</VirtualHost>
