@@ -156,7 +156,7 @@ template "#{node[:apache][:dir]}/sites-available/wordpress.conf.rewrite.inc" do
   user node[:apache][:user]
   group node[:apache][:group]
   mode 00440
-  variables { :server_name => server_fqdn }
+  variables( { :server_name => server_fqdn } )
 end
 
 web_app "wordpress" do
