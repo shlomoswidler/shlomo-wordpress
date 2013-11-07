@@ -43,7 +43,7 @@ attribute "WordPress/web_root_overlay_bundle/region",
 
 attribute "WordPress/admin_ips",
   :display_name => "Admin IPs",
-  :description => "Array of IP address CIDRs to allow access to the admin area, or 'all'",
+  :description => "Array of IP address CIDRs to allow access to the admin/login area",
   :type => "array",
   :required => "optional",
-  :default => "all"
+  :default => "[ 'all' ]"
