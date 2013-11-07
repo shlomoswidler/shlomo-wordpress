@@ -1,21 +1,3 @@
-<% unless node[:wordpress][:admin_ips].length == 0 || node[:wordpress][:admin_ips].first.casecmp("all") %>
-## Restrict WordPress Login Pages to My IPs ##
-<Files wp-login.php>
-order deny,allow
-deny from all
-<% node[:wordpress][:admin_ips].each do |ip| %>
-Allow from <%= ip %>
-<% end %>
-</Files>
-<Files login>
-order deny,allow
-deny from all
-<% node[:wordpress][:admin_ips].each do |ip| %>
-Allow from <%= ip %>
-<% end %>
-</Files>
-<% end %>
-
 ServerSignature Off
 
 ## Block Sensitive Files ##
