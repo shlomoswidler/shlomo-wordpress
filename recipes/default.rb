@@ -144,6 +144,17 @@ apache_site "000-default" do
   enable false
 end
 
+template "#{node[:apache][:dir]}/sites-available/wordpress.conf.inc" do
+  source "wordpress.conf.inc.erb"
+end
+
+template "#{node[:apache][:dir]}/sites-available/wordpress.conf.rewrite.inc" do
+  source "wordpress.conf.rewrite.inc.erb"
+  variables (
+    :server_name => server_fqdn
+  )
+end
+
 web_app "wordpress" do
   template "wordpress.conf.erb"
   docroot node['wordpress']['dir']
@@ -182,8 +193,8 @@ if node[:wordpress][:web_root_overlay_bundle] && node[:wordpress][:web_root_over
     user 'root'
     cwd node[:wordpress][:dir]
     command <<-EOH
-      chown www-data:www-data .
-      chown -R www-data:www-data *
+      chown #{node[:apache][:user]}:#{node[:apache][:group]} .
+      chown -R #{node[:apache][:user]}:#{node[:apache][:group]} *
       find . -type d -exec chmod 755 {} \;
       find . -type f -exec chmod 644 {} \;
     EOH
