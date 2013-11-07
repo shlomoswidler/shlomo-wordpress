@@ -25,7 +25,7 @@ RewriteRule ^(.*)$ - [F,L]
 ## Protect from spam bots ##
 RewriteCond %{REQUEST_METHOD} POST
 RewriteCond %{REQUEST_URI} .wp-comments-post\.php*
-RewriteCond %{HTTP_REFERER} !.<%= @params[:server_name] %>.* [OR]
+RewriteCond %{HTTP_REFERER} !.<%= @server_name %>.* [OR]
 RewriteCond %{HTTP_USER_AGENT} ^$
 RewriteRule (.*) ^http://%{REMOTE_ADDR}/$ [R=301,L]
 
