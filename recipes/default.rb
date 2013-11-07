@@ -127,7 +127,7 @@ unless node['wordpress']['table_prefix'].nil?
   execute "set table prefix" do
     command <<-EOH
       sed -i -e "s/table_prefix[[:space:]]*=.*$/table_prefix='#{node['wordpress']['table_prefix']}';/" #{node['wordpress']['dir']}/wp-config.php
-      EOH
+    EOH
     not_if {
       shell = Mixlib::ShellOut.new("grep \"table_prefix[[:space:]]*=[[:space:]]*'#{node['wordpress']['table_prefix']}'\" #{node['wordpress']['dir']}/wp-config.php")
       shell.run_command
@@ -146,13 +146,17 @@ end
 
 template "#{node[:apache][:dir]}/sites-available/wordpress.conf.inc" do
   source "wordpress.conf.inc.erb"
+  user node[:apache][:user]
+  group node[:apache][:group]
+  mode 00440
 end
 
 template "#{node[:apache][:dir]}/sites-available/wordpress.conf.rewrite.inc" do
   source "wordpress.conf.rewrite.inc.erb"
-  variables (
-    :server_name => server_fqdn
-  )
+  user node[:apache][:user]
+  group node[:apache][:group]
+  mode 00440
+  variables { :server_name => server_fqdn }
 end
 
 web_app "wordpress" do
