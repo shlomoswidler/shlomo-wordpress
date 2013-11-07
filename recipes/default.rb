@@ -18,8 +18,12 @@ end
 
 include_recipe "apache2::mod_php5"
 
-if node.has_key?("ec2")
+if node[:wordpress].has_key?('fqdn')
+  server_fqdn = node[:wordpress][:fqdn]
+elsif node.has_key?("ec2")
   server_fqdn = node['ec2']['public_hostname']
+elsif node.has_key?("opsworks")
+  server_fqdn = node[:opsworks][:instance][:public_dns_name]
 else
   server_fqdn = node['fqdn']
 end
@@ -146,16 +150,16 @@ end
 
 cookbook_file "#{node[:apache][:dir]}/sites-available/wordpress.conf.inc" do
   source "wordpress.conf.inc"
-  user node[:apache][:user]
-  group node[:apache][:group]
-  mode 00440
+  user 'root'
+  group 'root'
+  mode 00644
 end
 
 template "#{node[:apache][:dir]}/sites-available/wordpress.conf.rewrite.inc" do
   source "wordpress.conf.rewrite.inc.erb"
-  user node[:apache][:user]
-  group node[:apache][:group]
-  mode 00440
+  user 'root'
+  group 'root'
+  mode 00644
   variables( { :server_name => server_fqdn } )
 end
 
