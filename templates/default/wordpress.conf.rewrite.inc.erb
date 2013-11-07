@@ -1,7 +1,6 @@
 <IfModule mod_rewrite.c>
 
 ## SQL Injection Block ##
-RewriteBase /
 RewriteCond %{REQUEST_METHOD} ^(HEAD|TRACE|DELETE|TRACK) [NC]
 RewriteRule ^(.*)$ - [F,L]
 RewriteCond %{QUERY_STRING} \.\.\/ [NC,OR]
