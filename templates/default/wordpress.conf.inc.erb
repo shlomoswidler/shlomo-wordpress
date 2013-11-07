@@ -1,0 +1,54 @@
+<% unless node[:wordpress][:admin_ips].length == 0 || node[:wordpress][:admin_ips].first.casecmp("all") %>
+## Restrict WordPress Login Pages to My IPs ##
+<Files wp-login.php>
+order deny,allow
+deny from all
+<% node[:wordpress][:admin_ips].each do |ip| %>
+Allow from <%= ip %>
+<% end %>
+</Files>
+<Files login>
+order deny,allow
+deny from all
+<% node[:wordpress][:admin_ips].each do |ip| %>
+Allow from <%= ip %>
+<% end %>
+</Files>
+<% end %>
+
+ServerSignature Off
+
+## Block Sensitive Files ##
+Options All -Indexes
+<files .htaccess>
+Order allow,deny
+Deny from all
+</files>
+<files readme.html>
+Order allow,deny
+Deny from all
+</files>
+<files license.txt>
+Order allow,deny
+Deny from all
+</files>
+<files install.php>
+Order allow,deny
+Deny from all
+</files>
+<files wp-config.php>
+Order allow,deny
+Deny from all
+</files>
+<files error_log>
+Order allow,deny
+Deny from all
+</files>
+<files fantastico_fileslist.txt>
+Order allow,deny
+Deny from all
+</files>
+<files fantversion.php>
+Order allow,deny
+Deny from all
+</files>
