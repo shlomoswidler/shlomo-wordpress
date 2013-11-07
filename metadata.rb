@@ -40,3 +40,10 @@ attribute "WordPress/web_root_overlay_bundle/region",
   :type => "string",
   :required => "optional",
   :default => nil
+
+attribute "WordPress/admin_ips",
+  :display_name => "Admin IPs",
+  :description => "Array of IP address CIDRs to allow access to the admin area, or 'all'",
+  :type => "array",
+  :required => "optional",
+  :default => "all"
