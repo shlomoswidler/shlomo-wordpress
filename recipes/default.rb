@@ -144,8 +144,8 @@ apache_site "000-default" do
   enable false
 end
 
-template "#{node[:apache][:dir]}/sites-available/wordpress.conf.inc" do
-  source "wordpress.conf.inc.erb"
+cookbook_file "#{node[:apache][:dir]}/sites-available/wordpress.conf.inc" do
+  source "wordpress.conf.inc"
   user node[:apache][:user]
   group node[:apache][:group]
   mode 00440
