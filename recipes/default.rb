@@ -168,6 +168,7 @@ web_app "wordpress" do
   docroot node['wordpress']['dir']
   server_name server_fqdn
   server_aliases node['wordpress']['server_aliases']
+  admin_ips node['wordpress']['admin_ips']
 end
 
 if node[:wordpress][:web_root_overlay_bundle] && node[:wordpress][:web_root_overlay_bundle][:region] && \
