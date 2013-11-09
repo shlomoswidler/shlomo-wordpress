@@ -39,6 +39,20 @@ attribute "WordPress/web_root_overlay_bundle/region",
   :description => "AWS region name in which the S3 bucket containing the webroot overlay bundle is located.",
   :type => "string",
   :required => "optional",
+  :default => nil,
+  
+attribute "WordPress/web_root_overlay_bundle/aws_access_key_id",
+  :display_name => "AWS access key id",
+  :description => "AWS access key id to use for accessing the specified root dir tarball. If not specified, the credentials associated with the instance's IAM Role, if any, will be used.",
+  :type => "string",
+  :required => "recommended",
+  :default => nil
+
+attribute "WordPress/web_root_overlay_bundle/aws_secret_access_key",
+  :display_name => "AWS secret access key",
+  :description => "AWS secret access key to use for accessing the specified root dir tarball. If not specified, the credentials associated with the instance's IAM Role, if any, will be used.",
+  :type => "string",
+  :required => "recommended",
   :default => nil
 
 attribute "WordPress/admin_ips",
