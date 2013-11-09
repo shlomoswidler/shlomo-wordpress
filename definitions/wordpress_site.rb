@@ -20,14 +20,15 @@ define :wordpress_site, :template => "wordpress.conf.erb" do
 
   include_recipe "apache2::mod_php5"
 
-  if params.has_key?('fqdn')
-    server_fqdn = params[:fqdn]
-  elsif node.has_key?("ec2")
-    server_fqdn = node[:ec2][:public_hostname]
-  elsif node.has_key?("opsworks")
-    server_fqdn = node[:opsworks][:instance][:public_dns_name]
-  else
-    server_fqdn = node[:fqdn]
+  server_fqdn = params[:fqdn]
+  if server_fqdn.nil?
+    if node.has_key?("ec2")
+      server_fqdn = node[:ec2][:public_hostname]
+    elsif node.has_key?("opsworks")
+      server_fqdn = node[:opsworks][:instance][:public_dns_name]
+    else
+      server_fqdn = node[:fqdn]
+    end
   end
 
   params[:db][:password] = ::SecurePassword.secure_password if params[:db][:password].nil?
