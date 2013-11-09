@@ -9,6 +9,7 @@ wordpress_site node['wordpress']['app_name'] do
   table_prefix    node['wordpress']['table_prefix']
   languages       node['wordpress']['languages']
   wp_config_extras node['wordpress']['wp_config_extras']
+  keys            node['wordpress']['keys']
   web_root_overlay_bundle node['wordpress']['web_root_overlay_bundle']
   admin_ips       node['wordpress']['admin_ips']
 end
