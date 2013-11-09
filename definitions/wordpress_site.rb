@@ -167,7 +167,7 @@ define :wordpress_site, :template => "wordpress.conf.erb" do
   end
 
   web_app params[:name] do
-    template template
+    template params[:template]
     docroot params[:dir]
     server_name server_fqdn
     server_aliases params[:server_aliases]
