@@ -31,6 +31,7 @@ define :wordpress_site, :template => "wordpress.conf.erb" do
   end
 
   params[:db][:password] = ::SecurePassword.secure_password if params[:db][:password].nil?
+  params[:keys] = {} if params[:keys].nil?
   params[:keys][:auth] = ::SecurePassword.secure_password if params[:keys][:auth].nil?
   params[:keys][:secure_auth] = ::SecurePassword.secure_password if params[:keys][:secure_auth].nil?
   params[:keys][:logged_in] = ::SecurePassword.secure_password if params[:keys][:logged_in].nil?
