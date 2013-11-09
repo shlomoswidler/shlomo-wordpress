@@ -32,14 +32,14 @@ attribute "WordPress/web_root_overlay_bundle/s3_url",
   :description => "S3 URL (s3://bucket/filename.tar.gz) of tarball to unpack into the wordpress root dir.",
   :type => "string",
   :required => "optional",
-  :default =>nil
+  :default => nil
   
 attribute "WordPress/web_root_overlay_bundle/region",
   :display_name => "region",
   :description => "AWS region name in which the S3 bucket containing the webroot overlay bundle is located.",
   :type => "string",
   :required => "optional",
-  :default => nil,
+  :default => nil
   
 attribute "WordPress/web_root_overlay_bundle/aws_access_key_id",
   :display_name => "AWS access key id",
