@@ -36,7 +36,9 @@
   SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
   
   ServerName <%= @server_name %>
-  ServerAlias <% @server_aliases.each do |a| %><%= a %> <% end %>
+  <% if !(@server_aliases.nil?) && @server_aliases.length > 0 %>
+  ServerAlias <%= @server_aliases.join(' ') %>
+  <% end %>
   DocumentRoot <%= @docroot %>
 
   <Directory <%= @docroot %>>
