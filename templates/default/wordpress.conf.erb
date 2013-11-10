@@ -3,9 +3,9 @@
   <% if !(@server_aliases.nil?) && @server_aliases.length > 0 %>
   ServerAlias <%= @server_aliases.join(' ') %>
   <% end %>
-  DocumentRoot <%= @docroot %>
+  DocumentRoot <%= @dir %>
 
-  <Directory <%= @docroot %>>
+  <Directory <%= @dir %>>
     Options FollowSymLinks
     AllowOverride FileInfo Options
     Order allow,deny
@@ -24,7 +24,7 @@
   Include <%= node[:apache][:dir] %>/sites-available/<%= @name %>.conf.inc
 
   RewriteEngine On
-  RewriteLog <%= node['apache']['log_dir'] %>/<%= @application_name %>-rewrite.log
+  RewriteLog <%= node['apache']['log_dir'] %>/<%= @name %>-rewrite.log
   RewriteLogLevel 0
   Include <%= node[:apache][:dir] %>/sites-available/<%= @name %>.conf.rewrite.inc
 </VirtualHost>
@@ -39,9 +39,9 @@
   <% if !(@server_aliases.nil?) && @server_aliases.length > 0 %>
   ServerAlias <%= @server_aliases.join(' ') %>
   <% end %>
-  DocumentRoot <%= @docroot %>
+  DocumentRoot <%= @dir %>
 
-  <Directory <%= @docroot %>>
+  <Directory <%= @dir %>>
     Options FollowSymLinks
     AllowOverride FileInfo Options
     Order allow,deny
@@ -78,7 +78,7 @@
   Include <%= node[:apache][:dir] %>/sites-available/<%= @name %>.conf.inc
   
   RewriteEngine On
-  RewriteLog <%= node['apache']['log_dir'] %>/<%= @application_name %>-https-rewrite.log
+  RewriteLog <%= node['apache']['log_dir'] %>/<%= @name %>-https-rewrite.log
   RewriteLogLevel 0
   Include <%= node[:apache][:dir] %>/sites-available/<%= @name %>.conf.rewrite.inc
   
