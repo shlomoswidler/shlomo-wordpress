@@ -1,7 +1,7 @@
 <VirtualHost *:80>
   ServerName <%= @params[:server_name] %>
-  <% Chef::Log.debug("TODO: Remove me from tempalte wordpress.conf.erb: template @params are: #{@params.inspect}") %>
-  <% if !(@params[:server_aliases].nil? && @params.length > 0 %>
+  <% Chef::Log.debug("TODO: Remove me from template wordpress.conf.erb: template @params are: #{@params.inspect}") %>
+  <% if !(@params[:server_aliases].nil?) && @params.length > 0 %>
   ServerAlias <% @params[:server_aliases].each do |a| %><%= a %> <% end %>
   <% end %>
   DocumentRoot <%= @params[:docroot] %>
