@@ -1,9 +1,22 @@
-define :wordpress_site do
+define :wordpress_site, \
+  :template => "wordpress.conf.erb",
+  :db => nil,
+  :fqdn => nil,
+  :keys => nil,
+  :version => "latest",
+  :dir => "/var/www/wordpress",
+  :repourl => nil,
+  :server_aliases => nil,
+  :table_prefix => nil,
+  :languages => nil,
+  :wp_config_extras => nil,
+  :web_root_overlay_bundle => nil,
+  :admin_ips => nil
+do
 
   app_name = params[:name]
 
   template_source = params[:template]
-  template_source = "wordpress.conf.erb" if template_source.nil? || template_source.length == 0
 
   include_recipe "apache2"
   if params[:db][:host] == "localhost"
