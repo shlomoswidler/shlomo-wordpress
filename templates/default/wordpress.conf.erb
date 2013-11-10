@@ -53,7 +53,7 @@
     AllowOverride None
   </Directory>
 
-<% if @admin_ips.length > 0 && @admin_ips.first.downcase != "all" %>
+<% if @admin_ips && @admin_ips.length > 0 && @admin_ips.first.downcase != "all" %>
   ## Restrict WordPress Login Pages to My IPs ##
   <Files wp-login.php>
     order deny,allow
