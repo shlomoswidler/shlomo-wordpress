@@ -205,7 +205,7 @@ do
     end
   end
 
-  apache_site "#{params[:name]}.conf" do
+  apache_site "#{app_name}.conf" do
     enable true
   end
   
