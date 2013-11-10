@@ -205,13 +205,14 @@ do
     ruby_block "download webroot overlay bundle for #{app_name}" do
       block do
         InstanceMetadata.wait_for_instance_IAM_metadata_to_be_available
+        env = {}
         if !(params[:web_root_overlay_bundle][:aws_access_key_id].nil?) && !(params[:web_root_overlay_bundle][:aws_secret_access_key].nil?)
-          environment ({
+          env = {
             "AWS_ACCESS_KEY_ID" => params[:web_root_overlay_bundle][:aws_access_key_id],
             "AWS_SECRET_ACCESS_KEY" => params[:web_root_overlay_bundle][:aws_secret_access_key]
-          })  
+          }  
         end
-        shell = Mixlib::ShellOut.new("aws --region #{params[:web_root_overlay_bundle][:region]} s3 cp #{params[:web_root_overlay_bundle][:s3_url]} #{params[:dir]}")
+        shell = Mixlib::ShellOut.new("aws --region #{params[:web_root_overlay_bundle][:region]} s3 cp #{params[:web_root_overlay_bundle][:s3_url]} #{params[:dir]}", :env => env)
         result= shell.run_command
         if result.exitstatus != 0
           raise "Failed to download webroot overlay bundle from #{params[:web_root_overlay_bundle][:s3_url]}\nSTDERR:\n"+shell.stderr+"\nSTDOUT:\n"+shell.stdout
