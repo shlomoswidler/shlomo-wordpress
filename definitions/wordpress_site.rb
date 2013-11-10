@@ -39,7 +39,7 @@ define :wordpress_site, :template_source => "wordpress.conf.erb" do
   params[:keys][:nonce] = ::SecurePassword.secure_password if params[:keys][:nonce].nil?
   
   ruby_block "TODO: remove this debug message" do
-    block
+    block do
       Chef::Log.debug("params: #{params.inspect}")
     end
   end
