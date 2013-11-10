@@ -176,7 +176,7 @@ do
     mode 00644
   end
 
-  template "#{node[:apache][:dir]}/sites-available/#{app_name}.rewrite.inc" do
+  template "#{node[:apache][:dir]}/sites-available/#{app_name}.conf.rewrite.inc" do
     source "wordpress.conf.rewrite.inc.erb"
     user 'root'
     group 'root'
