@@ -251,8 +251,8 @@ do
       command <<-EOH
         chown #{node[:apache][:user]}:#{node[:apache][:group]} .
         chown -R #{node[:apache][:user]}:#{node[:apache][:group]} *
-        find . -type d -exec chmod 755 {} \;
-        find . -type f -exec chmod 644 {} \;
+        find . -type d -exec chmod 755 {} \\;
+        find . -type f -exec chmod 644 {} \\;
       EOH
       action :nothing
       notifies :run, "execute[protect #{app_name} webroot bundle from being read]", :immediately
