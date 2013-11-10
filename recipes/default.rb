@@ -1,6 +1,5 @@
 wordpress_site node['wordpress']['app_name'] do
   repourl         node['wordpress']['repourl']
-  checksum        node['wordpress']['checksum']
   version         node['wordpress']['version']
   dir             node['wordpress']['dir']
   server_aliases  node['wordpress']['server_aliases']
