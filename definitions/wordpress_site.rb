@@ -1,5 +1,6 @@
 define :wordpress_site, \
   :template => "wordpress.conf.erb", \
+  :cookbook => nil,
   :db => nil, \
   :fqdn => nil, \
   :keys => nil, \
@@ -15,8 +16,6 @@ define :wordpress_site, \
 do
 
   app_name = params[:name]
-
-  template_source = params[:template]
 
   include_recipe "apache2"
   if params[:db][:host] == "localhost"
@@ -184,17 +183,38 @@ do
     variables( { :server_name => server_fqdn } )
   end
 
-  wp_dir = params[:dir]
-  aliases = params[:server_aliases]
-  adm_ips = params[:admin_ips]
-  web_app app_name do
-    template template_source
-    docroot wp_dir
-    server_name server_fqdn
-    server_aliases aliases
-    admin_ips adm_ips
+  ## IDEALLY we would simply call the web_app definition here. But it doesn't work.
+  ## Not sure why, but as a workaround, I'm monkey-including the body of the web_app definition
+  ## directly into here.
+
+  include_recipe 'apache2::default'
+  include_recipe 'apache2::mod_rewrite'
+  include_recipe 'apache2::mod_deflate'
+  include_recipe 'apache2::mod_headers'
+
+  params[:docroot] = params[:dir]
+  params[:server_name] = server_fqdn
+  template "#{node['apache']['dir']}/sites-available/#{app_name}.conf" do
+    source   params[:template]
+    owner    'root'
+    group    node['apache']['root_group']
+    mode     '0644'
+    cookbook params[:cookbook] if params[:cookbook]
+    variables(
+      :application_name => app_name,
+      :params           => params
+    )
+    if ::File.exists?("#{node['apache']['dir']}/sites-enabled/#{app_name}.conf")
+      notifies :reload, 'service[apache2]'
+    end
   end
 
+  apache_site "#{params[:name]}.conf" do
+    enable true
+  end
+  
+  ## End of monkey-inclusion of the web_app definition.
+  
   if params[:web_root_overlay_bundle] && params[:web_root_overlay_bundle][:region] && \
     params[:web_root_overlay_bundle][:s3_url]
   
