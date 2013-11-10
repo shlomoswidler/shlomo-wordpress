@@ -1,4 +1,7 @@
-define :wordpress_site, :template_source => "wordpress.conf.erb" do
+define :wordpress_site do
+
+  template_source = params[:template]
+  template_source = "wordpress.conf.erb" if template_source.nil? || template_source.length == 0
 
   include_recipe "apache2"
   if params[:db][:host] == "localhost"
@@ -37,13 +40,6 @@ define :wordpress_site, :template_source => "wordpress.conf.erb" do
   params[:keys][:secure_auth] = ::SecurePassword.secure_password if params[:keys][:secure_auth].nil?
   params[:keys][:logged_in] = ::SecurePassword.secure_password if params[:keys][:logged_in].nil?
   params[:keys][:nonce] = ::SecurePassword.secure_password if params[:keys][:nonce].nil?
-  
-  ruby_block "TODO: remove this debug message" do
-    block do
-      Chef::Log.debug("params: #{params.inspect}")
-    end
-  end
-
   
   if params[:version] == 'latest'
     # WordPress.org does not provide a sha256 checksum, so we'll use the sha1 they do provide
@@ -174,7 +170,7 @@ define :wordpress_site, :template_source => "wordpress.conf.erb" do
   end
 
   web_app params[:name] do
-    template params[:template_source]
+    template template_source
     docroot params[:dir]
     server_name server_fqdn
     server_aliases params[:server_aliases]
