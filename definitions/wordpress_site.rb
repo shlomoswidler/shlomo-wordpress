@@ -192,7 +192,6 @@ do
   include_recipe 'apache2::mod_deflate'
   include_recipe 'apache2::mod_headers'
 
-  params[:docroot] = params[:dir]
   params[:server_name] = server_fqdn
   template "#{node['apache']['dir']}/sites-available/#{app_name}.conf" do
     source   params[:template]
@@ -200,10 +199,7 @@ do
     group    node['apache']['root_group']
     mode     '0644'
     cookbook params[:cookbook] if params[:cookbook]
-    variables(
-      :application_name => app_name,
-      :params           => params
-    )
+    variables params
     if ::File.exists?("#{node['apache']['dir']}/sites-enabled/#{app_name}.conf")
       notifies :reload, 'service[apache2]'
     end
