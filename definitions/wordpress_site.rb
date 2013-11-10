@@ -1,5 +1,7 @@
 define :wordpress_site do
 
+  app_name = app_name
+
   template_source = params[:template]
   template_source = "wordpress.conf.erb" if template_source.nil? || template_source.length == 0
 
@@ -108,9 +110,9 @@ define :wordpress_site do
     end
   end
 
-  log "wordpress_install_message-in-#{params[:name]}" do
+  log "wordpress_install_message-in-#{app_name}" do
     action :nothing
-    message "Navigate to 'http://#{server_fqdn}/wp-admin/install.php' to complete #{params[:name]} wordpress installation"
+    message "Navigate to 'http://#{server_fqdn}/wp-admin/install.php' to complete #{app_name} wordpress installation"
   end
 
   template "#{params[:dir]}/wp-config.php" do
@@ -130,11 +132,11 @@ define :wordpress_site do
       :lang            => params[:languages][:lang],
       :wp_config_extras =>params[:wp_config_extras]
     )
-    notifies :write, "log[wordpress_install_message-in-#{params[:name]}]"
+    notifies :write, "log[wordpress_install_message-in-#{app_name}]"
   end
 
   unless params[:table_prefix].nil?
-    execute "set #{params[:name]} table prefix" do
+    execute "set #{app_name} table prefix" do
       command <<-EOH
         sed -i -e "s/table_prefix[[:space:]]*=.*$/table_prefix='#{params[:table_prefix]}';/" #{params[:dir]}/wp-config.php
       EOH
@@ -143,7 +145,7 @@ define :wordpress_site do
         shell.run_command
         shell.exitstatus && shell.stdout.length > 1
       }
-      notifies :write, "log[wordpress_install_message-in-#{params[:name]}]"
+      notifies :write, "log[wordpress_install_message-in-#{app_name}]"
     end
   end
 
@@ -169,7 +171,7 @@ define :wordpress_site do
     variables( { :server_name => server_fqdn } )
   end
 
-  web_app params[:name] do
+  web_app app_name do
     template template_source
     docroot params[:dir]
     server_name server_fqdn
@@ -184,7 +186,7 @@ define :wordpress_site do
   
     bundle_basename = File.basename(params[:web_root_overlay_bundle][:s3_url])
   
-    ruby_block "download webroot overlay bundle for #{params[:name]}" do
+    ruby_block "download webroot overlay bundle for #{app_name}" do
       block do
         InstanceMetadata.wait_for_instance_IAM_metadata_to_be_available
         if !(params[:web_root_overlay_bundle][:aws_access_key_id].nil?) && !(params[:web_root_overlay_bundle][:aws_secret_access_key].nil?)
@@ -200,10 +202,10 @@ define :wordpress_site do
         end
       end
       not_if { File.exists?("#{params[:dir]}/#{bundle_basename}") }
-      notifies :run, "execute[open webroot overlay bundle for #{params[:name]}]", :immediately
+      notifies :run, "execute[open webroot overlay bundle for #{app_name}]", :immediately
     end
   
-    execute "open webroot overlay bundle for #{params[:name]}" do
+    execute "open webroot overlay bundle for #{app_name}" do
       cwd params[:dir]
       command "tar xvzf #{bundle_basename}"
       action :nothing
@@ -220,10 +222,10 @@ define :wordpress_site do
         find . -type f -exec chmod 644 {} \;
       EOH
       action :nothing
-      notifies :run, "execute[protect #{params[:name]} webroot bundle from being read]", :immediately
+      notifies :run, "execute[protect #{app_name} webroot bundle from being read]", :immediately
     end
   
-    execute "protect #{params[:name]} webroot bundle from being read" do
+    execute "protect #{app_name} webroot bundle from being read" do
       command "chmod 000 #{params[:dir]}/#{bundle_basename}"
       action :nothing
     end
