@@ -171,12 +171,15 @@ define :wordpress_site do
     variables( { :server_name => server_fqdn } )
   end
 
+  wp_dir = params[:dir]
+  aliases = params[:server_aliases]
+  adm_ips = params[:admin_ips]
   web_app app_name do
     template template_source
-    docroot params[:dir]
+    docroot wp_dir
     server_name server_fqdn
-    server_aliases params[:server_aliases]
-    admin_ips params[:admin_ips]
+    server_aliases aliases
+    admin_ips adm_ips
   end
 
   if params[:web_root_overlay_bundle] && params[:web_root_overlay_bundle][:region] && \
