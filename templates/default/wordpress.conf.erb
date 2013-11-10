@@ -1,12 +1,11 @@
 <VirtualHost *:80>
-  ServerName <%= @params[:server_name] %>
-  <% Chef::Log.debug("TODO: Remove me from template wordpress.conf.erb: template @params are: #{@params.inspect}") %>
-  <% if !(@params[:server_aliases].nil?) && @params.length > 0 %>
-  ServerAlias <% @params[:server_aliases].each do |a| %><%= a %> <% end %>
+  ServerName <%= @server_name %>
+  <% if !(@server_aliases.nil?) && @server_aliases.length > 0 %>
+  ServerAlias <%= @server_aliases.join(' ') %>
   <% end %>
-  DocumentRoot <%= @params[:docroot] %>
+  DocumentRoot <%= @docroot %>
 
-  <Directory <%= @params[:docroot] %>>
+  <Directory <%= @docroot %>>
     Options FollowSymLinks
     AllowOverride FileInfo Options
     Order allow,deny
@@ -36,11 +35,11 @@
   SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
   SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
   
-  ServerName <%= @params[:server_name] %>
-  ServerAlias <% @params[:server_aliases].each do |a| %><%= a %> <% end %>
-  DocumentRoot <%= @params[:docroot] %>
+  ServerName <%= @server_name %>
+  ServerAlias <% @server_aliases.each do |a| %><%= a %> <% end %>
+  DocumentRoot <%= @docroot %>
 
-  <Directory <%= @params[:docroot] %>>
+  <Directory <%= @docroot %>>
     Options FollowSymLinks
     AllowOverride FileInfo Options
     Order allow,deny
@@ -52,19 +51,19 @@
     AllowOverride None
   </Directory>
 
-<% if @params[:admin_ips].length > 0 && @params[:admin_ips].first.downcase != "all" %>
+<% if @admin_ips.length > 0 && @admin_ips.first.downcase != "all" %>
   ## Restrict WordPress Login Pages to My IPs ##
   <Files wp-login.php>
     order deny,allow
     deny from all
-  <% @params[:admin_ips].each do |ip| %>
+  <% @admin_ips.each do |ip| %>
     Allow from <%= ip %>
   <% end %>
   </Files>
   <Files login>
     order deny,allow
     deny from all
-  <% @params[:admin_ips].each do |ip| %>
+  <% @admin_ips.each do |ip| %>
     Allow from <%= ip %>
   <% end %>
   </Files>
