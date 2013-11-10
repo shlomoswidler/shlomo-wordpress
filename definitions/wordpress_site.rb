@@ -1,6 +1,6 @@
 define :wordpress_site do
 
-  app_name = app_name
+  app_name = params[:name]
 
   template_source = params[:template]
   template_source = "wordpress.conf.erb" if template_source.nil? || template_source.length == 0
@@ -156,14 +156,14 @@ define :wordpress_site do
     enable false
   end
 
-  cookbook_file "#{node[:apache][:dir]}/sites-available/wordpress.conf.inc" do
+  cookbook_file "#{node[:apache][:dir]}/sites-available/#{app_name}.conf.inc" do
     source "wordpress.conf.inc"
     user 'root'
     group 'root'
     mode 00644
   end
 
-  template "#{node[:apache][:dir]}/sites-available/wordpress.conf.rewrite.inc" do
+  template "#{node[:apache][:dir]}/sites-available/#{app_name}.rewrite.inc" do
     source "wordpress.conf.rewrite.inc.erb"
     user 'root'
     group 'root'
