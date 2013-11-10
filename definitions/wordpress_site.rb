@@ -1,17 +1,17 @@
 define :wordpress_site, \
-  :template => "wordpress.conf.erb",
-  :db => nil,
-  :fqdn => nil,
-  :keys => nil,
-  :version => "latest",
-  :dir => "/var/www/wordpress",
-  :repourl => nil,
-  :server_aliases => nil,
-  :table_prefix => nil,
-  :languages => nil,
-  :wp_config_extras => nil,
-  :web_root_overlay_bundle => nil,
-  :admin_ips => nil
+  :template => "wordpress.conf.erb", \
+  :db => nil, \
+  :fqdn => nil, \
+  :keys => nil, \
+  :version => "latest", \
+  :dir => "/var/www/wordpress", \
+  :repourl => nil, \
+  :server_aliases => nil, \
+  :table_prefix => nil, \
+  :languages => nil, \
+  :wp_config_extras => nil, \
+  :web_root_overlay_bundle => nil, \
+  :admin_ips => nil \
 do
 
   app_name = params[:name]
