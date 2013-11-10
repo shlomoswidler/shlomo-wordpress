@@ -18,15 +18,15 @@
   </Directory>
 
   LogLevel info
-  ErrorLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-error.log
-  CustomLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-access.log combined
+  ErrorLog <%= node['apache']['log_dir'] %>/<%= @name %>-error.log
+  CustomLog <%= node['apache']['log_dir'] %>/<%= @name %>-access.log combined
 
-  Include <%= node[:apache][:dir] %>/sites-available/<%= @params[:name] %>.conf.inc
+  Include <%= node[:apache][:dir] %>/sites-available/<%= @name %>.conf.inc
 
   RewriteEngine On
   RewriteLog <%= node['apache']['log_dir'] %>/<%= @application_name %>-rewrite.log
   RewriteLogLevel 0
-  Include <%= node[:apache][:dir] %>/sites-available/<%= @params[:name] %>.conf.rewrite.inc
+  Include <%= node[:apache][:dir] %>/sites-available/<%= @name %>.conf.rewrite.inc
 </VirtualHost>
 
 <VirtualHost *:443>
@@ -72,14 +72,14 @@
 <% end %>
 
   LogLevel info
-  ErrorLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-https-error.log
-  CustomLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-https-access.log combined
+  ErrorLog <%= node['apache']['log_dir'] %>/<%= @name %>-https-error.log
+  CustomLog <%= node['apache']['log_dir'] %>/<%= @name %>-https-access.log combined
 
-  Include <%= node[:apache][:dir] %>/sites-available/<%= @params[:name] %>.conf.inc
+  Include <%= node[:apache][:dir] %>/sites-available/<%= @name %>.conf.inc
   
   RewriteEngine On
   RewriteLog <%= node['apache']['log_dir'] %>/<%= @application_name %>-https-rewrite.log
   RewriteLogLevel 0
-  Include <%= node[:apache][:dir] %>/sites-available/<%= @params[:name] %>.conf.rewrite.inc
+  Include <%= node[:apache][:dir] %>/sites-available/<%= @name %>.conf.rewrite.inc
   
 </VirtualHost>
