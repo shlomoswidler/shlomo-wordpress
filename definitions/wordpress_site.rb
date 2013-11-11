@@ -220,7 +220,7 @@ do
     include_recipe 'awscli'
   
     bundle_basename = File.basename(params[:web_root_overlay_bundle][:s3_url])
-    bunlde_path = params[:dir]+"/"+bundle_basename
+    bundle_path = params[:dir]+"/"+bundle_basename
   
     ruby_block "download webroot overlay bundle for #{app_name}" do
       block do
