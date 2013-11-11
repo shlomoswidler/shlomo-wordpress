@@ -153,10 +153,10 @@ do
   unless params[:table_prefix].nil?
     execute "set #{app_name} table prefix" do
       command <<-EOH
-        sed -i -e "s/table_prefix[[:space:]]*=.*$/table_prefix='#{params[:table_prefix]}';/" #{params[:dir]}/wp-config.php
+        sed -i -e "s/table_prefix[[:space:]]*=.*$/table_prefix='#{params[:table_prefix]}';/" #{params[:docroot]}/wp-config.php
       EOH
       not_if {
-        shell = Mixlib::ShellOut.new("grep \"table_prefix[[:space:]]*=[[:space:]]*'#{params[:table_prefix]}'\" #{params[:dir]}/wp-config.php")
+        shell = Mixlib::ShellOut.new("grep \"table_prefix[[:space:]]*=[[:space:]]*'#{params[:table_prefix]}'\" #{params[:docroot]}/wp-config.php")
         shell.run_command
         shell.exitstatus && shell.stdout.length > 1
       }
