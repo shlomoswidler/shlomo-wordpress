@@ -3,9 +3,9 @@
   <% if !(@server_aliases.nil?) && @server_aliases.length > 0 %>
   ServerAlias <%= @server_aliases.join(' ') %>
   <% end %>
-  DocumentRoot <%= @dir %>
+  DocumentRoot <%= @docroot %>
 
-  <Directory <%= @dir %>>
+  <Directory <%= @docroot %>>
     Options FollowSymLinks
     AllowOverride FileInfo Options
     Order allow,deny
@@ -39,9 +39,9 @@
   <% if !(@server_aliases.nil?) && @server_aliases.length > 0 %>
   ServerAlias <%= @server_aliases.join(' ') %>
   <% end %>
-  DocumentRoot <%= @dir %>
+  DocumentRoot <%= @docroot %>
 
-  <Directory <%= @dir %>>
+  <Directory <%= @docroot %>>
     Options FollowSymLinks
     AllowOverride FileInfo Options
     Order allow,deny
