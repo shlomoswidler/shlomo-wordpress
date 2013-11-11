@@ -76,7 +76,8 @@ do
     end
   end
 
-  directory params[:dir] do
+  params[:docroot] = params[:dir]+"/webroot"
+  directory params[:docroot] do
     owner "root"
     group "root"
     mode "0755"
@@ -84,10 +85,10 @@ do
     recursive true
   end
 
-  execute "untar-wordpress-in-#{params[:dir]}" do
-    cwd params[:dir]
+  execute "untar-wordpress-in-#{params[:docroot]}" do
+    cwd params[:docroot]
     command "tar --strip-components 1 -xzf #{Chef::Config[:file_cache_path]}/wordpress-#{params[:version]}.tar.gz"
-    creates "#{params[:dir]}/wp-settings.php"
+    creates "#{params[:docroot]}/wp-settings.php"
   end
 
   execute "mysql-install-wp-privileges-#{params[:db][:database]}" do
@@ -129,7 +130,7 @@ do
     message "Navigate to 'http://#{server_fqdn}/wp-admin/install.php' to complete #{app_name} wordpress installation"
   end
 
-  template "#{params[:dir]}/wp-config.php" do
+  template "#{params[:docroot]}/wp-config.php" do
     source "wp-config.php.erb"
     owner "root"
     group "root"
@@ -219,6 +220,7 @@ do
     include_recipe 'awscli'
   
     bundle_basename = File.basename(params[:web_root_overlay_bundle][:s3_url])
+    bunlde_path = params[:dir]+"/"+bundle_basename
   
     ruby_block "download webroot overlay bundle for #{app_name}" do
       block do
@@ -236,20 +238,20 @@ do
           raise "Failed to download webroot overlay bundle from #{params[:web_root_overlay_bundle][:s3_url]}\nSTDERR:\n"+shell.stderr+"\nSTDOUT:\n"+shell.stdout
         end
       end
-      not_if { File.exists?("#{params[:dir]}/#{bundle_basename}") }
+      not_if { File.exists?("#{bundle_path}") }
       notifies :run, "execute[open webroot overlay bundle for #{app_name}]", :immediately
     end
   
     execute "open webroot overlay bundle for #{app_name}" do
-      cwd params[:dir]
-      command "tar xvzf #{bundle_basename}"
+      cwd params[:docroot]
+      command "tar xvzf #{bundle_path}"
       action :nothing
-      notifies :run, "execute[fix wordpress dir owner and permissions for #{params[:dir]}]", :immediately
+      notifies :run, "execute[fix wordpress dir owner and permissions for #{params[:docroot]}]", :immediately
     end
   
-    execute "fix wordpress dir owner and permissions for #{params[:dir]}" do
+    execute "fix wordpress dir owner and permissions for #{params[:docroot]}" do
       user 'root'
-      cwd params[:dir]
+      cwd params[:docroot]
       command <<-EOH
         chown #{node[:apache][:user]}:#{node[:apache][:group]} .
         chown -R #{node[:apache][:user]}:#{node[:apache][:group]} *
@@ -261,7 +263,7 @@ do
     end
   
     execute "protect #{app_name} webroot bundle from being read" do
-      command "chmod 000 #{params[:dir]}/#{bundle_basename}"
+      command "chmod 000 #{bundle_path}"
       action :nothing
     end
 
