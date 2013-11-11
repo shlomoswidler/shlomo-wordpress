@@ -62,13 +62,15 @@ do
     local_file = "#{Chef::Config[:file_cache_path]}/wordpress-latest.tar.gz"
     latest_sha1 = open('http://wordpress.org/latest.tar.gz.sha1') {|f| f.read }
     unless File.exists?(local_file) && ( Digest::SHA1.hexdigest(File.read(local_file)) == latest_sha1 )
-      remote_file "#{Chef::Config[:file_cache_path]}/wordpress-latest.tar.gz" do
+      remote_file "Download latest wordpress for #{app_name}" do
+        path "#{Chef::Config[:file_cache_path]}/wordpress-latest.tar.gz"
         source "http://wordpress.org/latest.tar.gz"
         mode "0644"
       end  
     end
   else
-    remote_file "#{Chef::Config[:file_cache_path]}/wordpress-#{params[:version]}.tar.gz" do
+    remote_file "Download wordpress version #{params[:version]} for #{app_name}" do
+      path "#{Chef::Config[:file_cache_path]}/wordpress-#{params[:version]}.tar.gz"
       source "#{params[:repourl]}/wordpress-#{params[:version]}.tar.gz"
       mode "0644"
     end
@@ -114,7 +116,7 @@ do
 
   # save node data after writing the MYSQL root password, so that a failed chef-client run that gets this far doesn't cause an unknown password to get applied to the box without being saved in the node data.
   unless Chef::Config[:solo]
-    ruby_block "save node data" do
+    ruby_block "save node data for #{app_name}" do
       block do
         node.save
       end
