@@ -98,7 +98,6 @@ do
 
   template "#{node[:mysql][:conf_dir]}/wp-grants-#{params[:db][:database]}.sql" do
     source "grants.sql.erb"
-    cookbook 'wordpress'
     owner "root"
     group "root"
     mode "0600"
