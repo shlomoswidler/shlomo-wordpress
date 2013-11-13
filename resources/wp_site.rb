@@ -11,8 +11,8 @@ attribute :cookbook, :kind_of => [String, NilClass], :default => nil, :required 
 attribute :dir, :kind_of => String, :required => true
 attribute :docroot, :kind_of => String, :default => "", :required => false
 attribute :server_aliases, :kind_of => Array, :required => false
-attribute :table_prefix, :kind_of [String, NilClass], :default => nil, :required => false
-attribute :admin_ips, :kind_of [Array, NilClass], :default => [ "all" ], :required => false
+attribute :table_prefix, :kind_of => [String, NilClass], :default => nil, :required => false
+attribute :admin_ips, :kind_of => [Array, NilClass], :default => [ "all" ], :required => false
 attribute :wp_config_extras, :kind_of => [Hash, NilClass], :default => nil, :required => false
 attribute :wp_config_auth_key, :kind_of => [String, NilClass], :default => nil, :required => false
 attribute :wp_config_secure_auth_key, :kind_of => [String, NilClass], :default => nil, :required => false
