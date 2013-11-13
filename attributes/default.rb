@@ -20,17 +20,21 @@
 #
 
 # General settings
-default['wordpress']['version'] = "latest"
-default['wordpress']['checksum'] = ""
-default['wordpress']['repourl'] = "http://wordpress.org/"
-default['wordpress']['dir'] = "/var/www/wordpress"
-default['wordpress']['db']['database'] = "wordpressdb"
-default['wordpress']['db']['user'] = "wordpressuser"
-default['wordpress']['server_aliases'] = [node['fqdn']]
-
-default['wordpress']['languages']['lang'] = ''
-
-default['wordpress']['table_prefix'] = "wp_"
-default['wordpress']['db']['host'] = "localhost"
-default['wordpress']['wp_config_extras'] = {}
-default['wordpress']['admin_ips'] = ["all"]
+default['wordpress'] = {}
+node['wordpress'].each do |site, options|
+  default['wordpress'][site] = {}
+  default['wordpress'][site]['version'] = "latest"
+  default['wordpress'][site]['checksum'] = ""
+  default['wordpress'][site]['repourl'] = "http://wordpress.org/"
+  default['wordpress'][site]['dir'] = "/var/www/wordpress"
+  default='wordpress'][site]['db'] = {}
+  default['wordpress'][site]['db']['database'] = "wordpressdb"
+  default['wordpress'][site]['db']['user'] = "wordpressuser"
+  default['wordpress'][site]['server_aliases'] = [node['fqdn']]
+  default['wordpress'][site]['languages'] = {}
+  default['wordpress'][site]['languages']['lang'] = ''
+  default['wordpress'][site]['table_prefix'] = "wp_"
+  default['wordpress'][site]['db']['host'] = "localhost"
+  default['wordpress'][site]['wp_config_extras'] = {}
+  default['wordpress'][site]['admin_ips'] = ["all"]
+end
