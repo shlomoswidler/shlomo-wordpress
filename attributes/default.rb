@@ -51,6 +51,7 @@ node['wordpress']['languages']['project_pathes'].each do |project,project_path|
     node['wordpress']['languages']['lang'] + '/default/export-translations?format=mo'
 end
 
+default['wordpress']['table_prefix'] = "wp_"
 default['wordpress']['db']['host'] = "localhost"
 default['wordpress']['wp_config_extras'] = {}
 default['wordpress']['admin_ips'] = ["all"]
