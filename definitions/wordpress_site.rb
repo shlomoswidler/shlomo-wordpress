@@ -8,7 +8,7 @@ define :wordpress_site, \
   :dir => "/var/www/wordpress", \
   :repourl => nil, \
   :server_aliases => nil, \
-  :table_prefix => nil, \
+  :table_prefix => "wp_", \
   :languages => nil, \
   :wp_config_extras => nil, \
   :web_root_overlay_bundle => nil, \
@@ -144,23 +144,10 @@ do
       :logged_in_key   => params[:keys][:logged_in],
       :nonce_key       => params[:keys][:nonce],
       :lang            => params[:languages][:lang],
+      :table_prefix    => params[:table_prefix],
       :wp_config_extras =>params[:wp_config_extras]
     )
     notifies :write, "log[wordpress_install_message-in-#{app_name}]"
-  end
-
-  unless params[:table_prefix].nil?
-    execute "set #{app_name} table prefix" do
-      command <<-EOH
-        sed -i -e "s/table_prefix[[:space:]]*=.*$/table_prefix='#{params[:table_prefix]}';/" #{params[:docroot]}/wp-config.php
-      EOH
-      not_if {
-        shell = Mixlib::ShellOut.new("grep \"table_prefix[[:space:]]*=[[:space:]]*'#{params[:table_prefix]}'\" #{params[:docroot]}/wp-config.php")
-        shell.run_command
-        shell.exitstatus && shell.stdout.length > 1
-      }
-      notifies :write, "log[wordpress_install_message-in-#{app_name}]"
-    end
   end
 
   include_recipe "apache2::mod_rewrite"
