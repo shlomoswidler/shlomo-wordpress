@@ -27,7 +27,7 @@ node['wordpress'].each do |site, options|
   default['wordpress'][site]['checksum'] = ""
   default['wordpress'][site]['repourl'] = "http://wordpress.org/"
   default['wordpress'][site]['dir'] = "/var/www/wordpress"
-  default='wordpress'][site]['db'] = {}
+  default['wordpress'][site]['db'] = {}
   default['wordpress'][site]['db']['database'] = "wordpressdb"
   default['wordpress'][site]['db']['user'] = "wordpressuser"
   default['wordpress'][site]['server_aliases'] = [node['fqdn']]
