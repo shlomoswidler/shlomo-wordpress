@@ -12,5 +12,6 @@ node['wordpress'].each do |app_name, options|
     keys            options['keys']
     web_root_overlay_bundle options['web_root_overlay_bundle']
     admin_ips       options['admin_ips']
+    ssl             options['ssl']
   end
 end
