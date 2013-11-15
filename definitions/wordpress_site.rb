@@ -12,7 +12,8 @@ define :wordpress_site, \
   :languages => nil, \
   :wp_config_extras => nil, \
   :web_root_overlay_bundle => nil, \
-  :admin_ips => nil \
+  :admin_ips => nil, \
+  :ssl => nil \
 do
 
   app_name = params[:name]
@@ -172,6 +173,39 @@ do
     variables( { :server_name => server_fqdn } )
   end
 
+  # ssl cert support
+  if params[:ssl]
+    if params[:ssl][:ssl_certificate]
+      template "#{node[:apache][:dir]}/ssl/#{app_name}.crt" do
+        mode 0600
+        source 'ssl.key.erb'
+        cookbook 'mod_php5_apache2'
+        variables :key => params[:ssl][:ssl_certificate]
+        notifies :restart, "service[apache2]"
+      end
+    end
+
+    if params[:ssl][:ssl_certificate_key]
+      template "#{node[:apache][:dir]}/ssl/#{app_name}.key" do
+        mode 0600
+        source 'ssl.key.erb'
+        cookbook 'mod_php5_apache2'
+        variables :key => params[:ssl][:ssl_certificate_key]
+        notifies :restart, "service[apache2]"
+      end
+    end
+
+    if params[:ssl][:ssl_certificate_ca]
+      template "#{node[:apache][:dir]}/ssl/#{app_name}.ca" do
+        mode 0600
+        source 'ssl.key.erb'
+        cookbook 'mod_php5_apache2'
+        variables :key => params[:ssl][:ssl_certificate_ca]
+        notifies :restart, "service[apache2]"
+      end
+    end
+  end
+  
   ## IDEALLY we would simply call the web_app definition here. But it doesn't work.
   ## Not sure why, but as a workaround, I'm monkey-including the body of the web_app definition
   ## directly into here.
