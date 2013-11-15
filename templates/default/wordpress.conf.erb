@@ -32,8 +32,16 @@
 <VirtualHost *:443>
 
   SSLEngine On
+  <% if @ssl && @ssl[:ssl_certificate] && @ssl[:ssl_certificate_key] %>
+  SSLCertificateFile    <%= node[:apache][:dir] %>/ssl/<%= @name %>.crt
+  SSLCertificateKeyFile <%= node[:apache][:dir] %>/ssl/<%= @name %>.key
+    <% if @ssl[:ssl_certificate_ca] %>
+  SSLCACertificateFile  <%= node[:apache][:dir] %>/ssl/<%= @name %>.ca
+    <% end %>
+  <% else %>
   SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
   SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+  <% end %>
   
   ServerName <%= @server_name %>
   <% if !(@server_aliases.nil?) && @server_aliases.length > 0 %>
