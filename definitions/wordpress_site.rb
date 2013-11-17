@@ -38,6 +38,14 @@ do
 
   include_recipe "apache2::mod_php5"
 
+  template "/etc/php5/apache2/conf.d/apc.ini" do
+    source "apc.ini.erb"
+    user 'root'
+    group 'root'
+    mode 00644
+    variables ({ :shm_size => node[:php][:apc][:shm_size] })
+  end
+  
   server_fqdn = params[:fqdn]
   if server_fqdn.nil?
     if node.has_key?("ec2")
