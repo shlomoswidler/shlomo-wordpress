@@ -8,7 +8,7 @@ version          "0.1.0"
 
 recipe "WordPress", "Installs and configures WordPress, and optionally the MySQL database it will use"
 
-depends "mysql", ">= 1.0.5"
+depends "mysql", "~> 1.0.0"
 depends "awscli", ">= 0.2.0"
 
 
