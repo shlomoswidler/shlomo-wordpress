@@ -38,5 +38,5 @@ node['wordpress'].each do |site, options|
   default['wordpress'][site]['wp_config_extras'] = {}
   default['wordpress'][site]['admin_ips'] = ["all"]
 end
-default[:php][:apc][:shm_size]="96M"
+default[:php][:apc][:shm_size]="128M"
 
