@@ -15,8 +15,3 @@ node['wordpress'].each do |app_name, options|
     ssl             options['ssl']
   end
 end
-
-if node['wordpress'].size > 1
-  # enable the default apache host
-  apache_site 'default'
-end
